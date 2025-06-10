@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Bahasa Indonesia - Kelas VII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+        .prose {
+             max-width: 100%;
+        }
+        /* Custom scrollbar for a more modern look */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; /* slate-200 */
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #94a3b8; /* slate-400 */
+            border-radius: 20px;
+            border: 3px solid #e2e8f0; /* slate-200 */
+        }
+        .dark ::-webkit-scrollbar-thumb {
+             background-color: #475569; /* slate-600 */
+             border: 3px solid #1e293b; /* slate-800 */
+        }
+        .nav-link.active {
+            background-color: #0e7490; /* cyan-700 */
+            color: white;
+        }
+        .nav-link.active:hover {
+            background-color: #0891b2; /* cyan-600 */
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-slate-800/80 backdrop-blur-sm border-r border-slate-200 dark:border-slate-700 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+                <h2 class="text-2xl font-extrabold text-cyan-600 dark:text-cyan-400">Belajar Bahasa</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">SMP Kelas VII</p>
+            </div>
+            <nav class="mt-4 px-2 flex flex-col h-[calc(100%-150px)]">
+                <div class="flex-grow overflow-y-auto">
+                    <a href="#beranda" class="nav-link flex items-center p-3 text-base font-medium text-slate-700 rounded-lg dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 group">
+                        <i data-feather="home" class="w-5 h-5 text-slate-500 group-hover:text-slate-800 dark:group-hover:text-white"></i>
+                        <span class="ml-3">Beranda</span>
+                    </a>
+                    <div class="mt-4" id="materi-links">
+                        <h3 class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Materi Pelajaran</h3>
+                         <!-- Materi links will be populated by JS -->
+                    </div>
+                     <a href="#kuis" class="nav-link flex items-center p-3 mt-4 text-base font-medium text-slate-700 rounded-lg dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 group">
+                        <i data-feather="help-circle" class="w-5 h-5 text-slate-500 group-hover:text-slate-800 dark:group-hover:text-white"></i>
+                        <span class="ml-3">Kuis Interaktif</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-200 dark:border-slate-700">
+                <button id="theme-toggle" class="w-full flex items-center justify-center p-2 text-sm font-medium text-slate-600 rounded-lg dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <i id="theme-toggle-dark-icon" data-feather="moon" class="w-5 h-5 hidden"></i>
+                    <i id="theme-toggle-light-icon" data-feather="sun" class="w-5 h-5 hidden"></i>
+                    <span class="ml-2">Ubah Tema</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="flex-1 md:ml-64 transition-all duration-300 ease-in-out">
+            <header class="sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-lg z-30 flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+                 <button id="sidebar-toggle" class="md:hidden p-2 rounded-md text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div id="header-title" class="text-lg font-semibold text-slate-800 dark:text-slate-100">Beranda</div>
+                <div class="w-6"></div> <!-- Spacer -->
+            </header>
+            
+            <main id="main-content" class="p-4 sm:p-6 lg:p-8">
+                <!-- Content will be loaded here by JS -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA SECTION ---
+
+        const materiData = [
+            { id: 'bab1', title: 'Bab 1: Jelajah Nusantara', content: `
+                <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 1: Jelajah Nusantara</h1>
+                    <p class="lead">Di bab ini, kita akan belajar tentang Teks Deskripsi. Siap-siap menjelajahi keindahan Indonesia lewat kata-kata, ya!</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Apa itu Teks Deskripsi?</h2>
+                        <p>Bayangin kamu lagi ceritain tempat liburan favoritmu ke teman. Kamu pasti akan gambarin tempatnya sejelas mungkin, kan? Nah, itulah Teks Deskripsi! Teks ini bertujuan menggambarkan objek (tempat, benda, orang) seolah-olah pembaca bisa melihat, mendengar, dan merasakannya langsung.</p>
+                        <blockquote>"Teks deskripsi itu kayak kamera, tapi dalam bentuk tulisan. Tugasnya menangkap dan melukiskan detail."</blockquote>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Penjelasan: Ciri-Ciri Teks Deskripsi</h2>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Menggambarkan sesuatu:</strong> Jelas, ini intinya. Bisa benda, tempat, atau suasana.</li>
+                            <li><strong>Melibatkan panca indra:</strong> Penulisannya bikin kita bisa membayangkan visualnya (penglihatan), suaranya (pendengaran), baunya (penciuman), rasanya (pengecapan), dan teksturnya (perabaan).</li>
+                            <li><strong>Bikin pembaca 'masuk' ke dalam cerita:</strong> Tujuannya agar kita seolah-olah ada di sana.</li>
+                            <li><strong>Menjelaskan ciri-ciri objek:</strong> Warna, ukuran, bentuk, dan keadaan objek dijelaskan secara rinci.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Contoh: Mendeskripsikan Pantai</h2>
+                        <p>Coba bandingkan dua kalimat ini:</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="border-l-4 border-red-400 p-4 bg-red-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-red-700 dark:text-red-300">Kurang Deskriptif:</p>
+                                <p>"Pemandangan pantai itu indah."</p>
+                            </div>
+                            <div class="border-l-4 border-green-400 p-4 bg-green-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-green-700 dark:text-green-300">Lebih Deskriptif:</p>
+                                <p>"Pasir putih yang halus terhampar luas, bertemu dengan air laut biru jernih yang berkilauan diterpa mentari. Suara debur ombak yang tenang berpadu dengan lambaian nyiur di tepi pantai, menciptakan suasana damai yang menenangkan jiwa."</p>
+                            </div>
+                        </div>
+                        <p class="mt-4">Mana yang lebih bikin kamu ngebayangin pantainya? Pasti yang kedua, kan? Itu karena ada <strong>kalimat perincian</strong> dan <strong>kata konkret</strong> (pasir putih, air biru jernih).</p>
+                    </div>
+                     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Kupas Teori: Majas Personifikasi</h2>
+                        <p>Biar makin keren, teks deskripsi sering pakai majas personifikasi. Majas ini bikin benda mati seolah-olah punya sifat atau kelakuan seperti manusia.</p>
+                        <p><strong>Contoh:</strong> "Angin sepoi-sepoi <em>membelai</em> lembut pipiku." (Angin kan nggak punya tangan untuk membelai, tapi kita paham maksudnya).</p>
+                        <p>Contoh lain: "Nyiur <em>melambai-lambai</em> di tepi pantai."</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 1</h2>
+                        <p>Jadi, di bab ini kita belajar bahwa teks deskripsi adalah alat super untuk "melukis dengan kata-kata". Kuncinya adalah:</p>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li>Gunakan kata-kata konkret yang bisa diindra.</li>
+                            <li>Buat kalimat perincian untuk menjelaskan detail.</li>
+                            <li>Pakai majas seperti personifikasi untuk menghidupkan suasana.</li>
+                        </ol>
+                        <p>Sekarang, kamu sudah siap mendeskripsikan apa pun dengan lebih hidup dan menarik!</p>
+                    </div>
+                </div>`},
+            { id: 'bab2', title: 'Bab 2: Dunia Imajinasi', content: `
+                 <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 2: Berkelana di Dunia Imajinasi</h1>
+                    <p class="lead">Yuk, kita selami dunia Puisi Rakyat dan Cerita Fantasi. Siapkan imajinasimu untuk bertualang!</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Puisi Rakyat</h2>
+                        <p>Puisi rakyat itu warisan sastra lisan dari nenek moyang kita. Biasanya nggak diketahui siapa pengarangnya (anonim) dan punya aturan yang ketat, makanya disebut puisi terikat.</p>
+                        <h3>Jenis-Jenis Puisi Rakyat</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-bold">1. Pantun</h4>
+                                <ul class="list-disc pl-5">
+                                    <li>Satu bait 4 baris, rima a-b-a-b.</li>
+                                    <li>Baris 1 & 2 sampiran, baris 3 & 4 isi.</li>
+                                </ul>
+                                <blockquote class="!mt-2">Jalan-jalan ke kota hujan,<br>Jangan lupa membeli talas.<br>Kalau ingin jadi juara kelas,<br>Belajar giat jangan malas.</blockquote>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">2. Gurindam</h4>
+                                <ul class="list-disc pl-5">
+                                    <li>Satu bait 2 baris, rima a-a.</li>
+                                    <li>Baris 1 syarat/sebab, baris 2 jawaban/akibat.</li>
+                                </ul>
+                                <blockquote class="!mt-2">Barang siapa tidak berilmu,<br>Bagaikan berjalan di malam kelabu.</blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Penjelasan: Cerita Fantasi</h2>
+                        <p>Cerita fantasi adalah cerita hasil khayalan penulis yang isinya serba tidak mungkin terjadi di dunia nyata. Ada keajaiban, tokoh sakti, atau dunia lain.</p>
+                        <h3>Unsur-Unsur Cerita Fantasi:</h3>
+                        <dl class="space-y-3">
+                            <div><dt class="font-bold">Tokoh & Penokohan:</dt><dd>Ada tokoh utama (protagonis) yang baik dan lawannya (antagonis) yang jahat. Sifatnya unik, kadang punya kekuatan super.</dd></div>
+                            <div><dt class="font-bold">Alur Cerita:</dt><dd>Biasanya punya struktur: <strong>Orientasi</strong> (pengenalan), <strong>Komplikasi</strong> (muncul masalah), <strong>Resolusi</strong> (penyelesaian masalah).</dd></div>
+                            <div><dt class="font-bold">Latar:</dt><dd>Latar tempat, waktu, dan suasananya imajinatif. Bisa di kerajaan antah berantah, dunia sihir, atau masa depan.</dd></div>
+                            <div><dt class="font-bold">Amanat:</dt><dd>Pesan moral yang ingin disampaikan penulis, biasanya tentang kebaikan melawan kejahatan.</dd></div>
+                        </dl>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 2</h2>
+                        <p>Di dunia imajinasi, kita bisa berekspresi lewat berbagai cara. Puisi rakyat (pantun, gurindam) mengajarkan kita nilai-nilai lewat susunan kata yang indah dan teratur. Sementara itu, cerita fantasi mengajak kita berpetualang ke dunia khayalan yang penuh keajaiban, mengajarkan tentang perjuangan dan kebaikan.</p>
+                    </div>
+                </div>`},
+            { id: 'bab3', title: 'Bab 3: Hal Baik bagi Tubuh', content: `
+                 <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 3: Hal yang Baik bagi Tubuh</h1>
+                    <p class="lead">Bab ini membahas Teks Prosedur. Yuk, kita pelajari cara membuat sesuatu atau melakukan suatu kegiatan dengan langkah-langkah yang benar!</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Apa itu Teks Prosedur?</h2>
+                        <p>Pernah lihat resep masakan? Atau tutorial cara merakit mainan? Nah, itu semua adalah contoh teks prosedur. Teks ini berisi petunjuk atau langkah-langkah untuk melakukan sesuatu secara berurutan agar tujuannya tercapai.</p>
+                        <blockquote>Tujuan teks prosedur adalah memberikan panduan yang jelas agar orang lain bisa berhasil melakukan suatu pekerjaan.</blockquote>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Penjelasan: Struktur Teks Prosedur</h2>
+                        <p>Teks prosedur biasanya punya struktur yang jelas:</p>
+                        <ol class="list-decimal pl-5 space-y-2">
+                           <li><strong>Tujuan:</strong> Bagian awal yang menjelaskan apa yang akan dibuat atau dilakukan.</li>
+                           <li><strong>Bahan dan Alat:</strong> Daftar material atau peralatan yang dibutuhkan.</li>
+                           <li><strong>Langkah-langkah:</strong> Inti dari teks prosedur. Berisi urutan tahapan yang harus diikuti.</li>
+                           <li><strong>Penutup (Opsional):</strong> Berisi kalimat motivasi atau ucapan selamat.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Kupas Teori: Unsur Kebahasaan Teks Prosedur</h2>
+                        <ul class="list-disc pl-5 space-y-3">
+                           <li><strong>Kalimat Perintah (Imperatif):</strong> Contoh: "Aduk<strong>lah</strong> adonan hingga rata.", "Masuk<strong>kan</strong> buah ke dalam blender."</li>
+                           <li><strong>Kalimat Ajakan/Larangan:</strong> Contoh: "<strong>Ayo</strong>, kita mulai!", "<strong>Jangan</strong> merebus terlalu lama."</li>
+                           <li><strong>Kata Keterangan (Adverbia):</strong> Contoh: "Aduk <em>dengan cepat</em>.", "Potong <em>menggunakan pisau</em>."</li>
+                           <li><strong>Kata Hubung (Konjungsi) Urutan:</strong> Seperti <em>pertama</em>, <em>lalu</em>, <em>kemudian</em>, <em>setelah itu</em>.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 3</h2>
+                        <p>Teks prosedur sangat berguna dalam kehidupan sehari-hari. Dengan mengikuti langkah-langkahnya secara berurutan, kita bisa melakukan berbagai hal dengan benar dan efisien. Kunci dari teks prosedur adalah urutan yang logis, kalimat perintah yang jelas, dan penjelasan yang rinci.</p>
+                    </div>
+                </div>`},
+             { id: 'bab4', title: 'Bab 4: Pelindung Bumi', content: `
+                <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 4: Aksi Nyata Para Pelindung Bumi</h1>
+                    <p class="lead">Saatnya jadi detektif berita! Di bab ini kita akan belajar semua tentang Teks Berita, mulai dari unsurnya sampai cara membedakan berita asli dan hoaks.</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Apa itu Teks Berita?</h2>
+                        <p>Teks berita adalah teks yang melaporkan kejadian, peristiwa, atau informasi mengenai sesuatu yang telah atau sedang terjadi. Informasi yang disampaikan harus berdasarkan <strong>fakta</strong>, aktual (terkini), dan penting untuk diketahui banyak orang.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Penjelasan: Unsur-Unsur Berita (5W+1H atau ADIKSIMBA)</h2>
+                        <p>Berita yang baik selalu menjawab enam pertanyaan dasar yang dikenal dengan rumus ADIKSIMBA:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Apa (What):</strong> Peristiwa apa yang terjadi?</li>
+                            <li><strong>Di mana (Where):</strong> Di mana peristiwa itu terjadi?</li>
+                            <li><strong>Kapan (When):</strong> Kapan peristiwa itu terjadi?</li>
+                            <li><strong>Siapa (Who):</strong> Siapa saja yang terlibat dalam peristiwa itu?</li>
+                            <li><strong>Mengapa (Why):</strong> Mengapa peristiwa itu bisa terjadi?</li>
+                            <li><strong>Bagaimana (How):</strong> Bagaimana proses terjadinya peristiwa itu?</li>
+                        </ul>
+                        <p class="mt-2">Keenam unsur ini biasanya sudah terangkum di bagian awal berita yang disebut <strong>Teras Berita (Lead)</strong>.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Kupas Teori: Membedakan Fakta dan Opini</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="border-l-4 border-sky-400 p-4 bg-sky-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-sky-700 dark:text-sky-300">Fakta</p>
+                                <p>Kenyataan atau peristiwa yang benar-benar terjadi dan dapat dibuktikan kebenarannya. Ciri-cirinya objektif dan ada data akurat (angka, tanggal, tempat).</p>
+                                <p class="mt-2"><strong>Contoh:</strong> "Banjir merendam 15 rumah di Desa Sukamaju pada hari Selasa, 9 Juni 2025."</p>
+                            </div>
+                            <div class="border-l-4 border-amber-400 p-4 bg-amber-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-amber-700 dark:text-amber-300">Opini</p>
+                                <p>Pendapat, pikiran, atau pendirian seseorang terhadap sesuatu. Sifatnya subjektif dan belum tentu benar.</p>
+                                <p class="mt-2"><strong>Contoh:</strong> "Menurut saya, banjir kali ini adalah yang terparah."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 4</h2>
+                        <p>Menjadi pembaca berita yang cerdas itu penting. Kita harus bisa mengidentifikasi unsur-unsur berita (ADIKSIMBA) untuk mendapatkan informasi yang lengkap. Yang paling penting, kita harus bisa membedakan mana informasi yang berupa fakta dan mana yang hanya opini, terutama untuk menghindari berita palsu (hoaks).</p>
+                    </div>
+                </div>`},
+             { id: 'bab5', title: 'Bab 5: Membuka Gerbang Dunia', content: `
+                 <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 5: Membuka Gerbang Dunia</h1>
+                    <p class="lead">Buku adalah jendela dunia. Di bab ini, kita akan belajar cara menanggapi buku, baik fiksi maupun nonfiksi, melalui teks tanggapan atau resensi.</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Apa itu Teks Tanggapan?</h2>
+                        <p>Teks tanggapan adalah teks yang berisi penilaian, ulasan, atau resensi terhadap suatu karya (buku, film, drama). Tujuannya adalah memberikan gambaran kepada orang lain mengenai kelebihan dan kekurangan karya tersebut dari sudut pandang kita.</p>
+                        <blockquote>Resensi yang baik itu seimbang, tidak hanya memuji tapi juga memberikan kritik yang membangun.</blockquote>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Penjelasan: Struktur Teks Tanggapan</h2>
+                        <p>Teks tanggapan (resensi) punya struktur yang khas:</p>
+                        <ol class="list-decimal pl-5 space-y-2">
+                           <li><strong>Konteks:</strong> Pengenalan karya yang akan ditanggapi. Isinya berupa identitas buku (judul, penulis, penerbit, tahun terbit, jumlah halaman).</li>
+                           <li><strong>Deskripsi:</strong> Ringkasan atau sinopsis dari isi buku. Untuk buku fiksi, bagian ini menjelaskan alur cerita secara singkat. Untuk nonfiksi, menjelaskan garis besar isi buku.</li>
+                           <li><strong>Penilaian:</strong> Bagian inti yang berisi pendapat peresensi. Di sinilah kita mengemukakan <strong>kelebihan</strong> dan <strong>kekurangan</strong> buku dari segi isi, bahasa, maupun tampilan. Jangan lupa sertakan saran!</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Contoh: Kalimat Penilaian dalam Teks Tanggapan</h2>
+                        <ul class="list-disc pl-5 space-y-2">
+                           <li><strong>Kelebihan:</strong> "Gaya bahasa penulis sangat mengalir dan mudah dipahami, membuat pembaca betah berlama-lama dengan buku ini."</li>
+                           <li><strong>Kekurangan:</strong> "Sayangnya, ada beberapa istilah teknis yang tidak disertai glosarium, sehingga sedikit menyulitkan pembaca awam."</li>
+                           <li><strong>Saran:</strong> "Akan lebih baik jika pada cetakan berikutnya, buku ini dilengkapi dengan daftar istilah (glosarium) di bagian akhir."</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 5</h2>
+                        <p>Memberikan tanggapan terhadap buku adalah cara kita berbagi pengalaman membaca. Dengan struktur konteks, deskripsi, dan penilaian, kita bisa menyusun ulasan yang informatif dan bermanfaat bagi calon pembaca lain. Kuncinya adalah memberikan penilaian yang jujur dan seimbang.</p>
+                    </div>
+                </div>`},
+             { id: 'bab6', title: 'Bab 6: Sampaikan Melalui Surat', content: `
+                 <div class="prose dark:prose-invert prose-cyan animate-fade-in">
+                    <h1 class="text-cyan-600 dark:text-cyan-400">Bab 6: Sampaikan Melalui Surat</h1>
+                    <p class="lead">Meskipun zaman sudah canggih, surat tetap menjadi media komunikasi penting. Mari kita pelajari perbedaan surat pribadi dan surat resmi, serta cara menulisnya dengan baik dan benar.</p>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2 class="!mt-0">Pengantar: Surat Pribadi vs Surat Resmi</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="border-l-4 border-pink-400 p-4 bg-pink-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-pink-700 dark:text-pink-300">Surat Pribadi</p>
+                                <p>Surat yang ditulis untuk keperluan personal, ditujukan kepada teman, keluarga, atau sahabat. Bahasanya lebih santai dan akrab, tapi tetap sopan.</p>
+                            </div>
+                            <div class="border-l-4 border-indigo-400 p-4 bg-indigo-50 dark:bg-slate-700/50 rounded">
+                                <p class="font-bold text-indigo-700 dark:text-indigo-300">Surat Resmi</p>
+                                <p>Surat yang digunakan untuk keperluan formal/dinas, mewakili instansi atau lembaga. Bahasanya harus baku, singkat, dan jelas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Penjelasan: Unsur-Unsur Surat Resmi</h2>
+                        <p>Surat resmi memiliki bagian-bagian yang tidak ada di surat pribadi, yaitu:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                           <li><strong>Kepala Surat (Kop Surat):</strong> Berisi nama, logo, dan alamat instansi.</li>
+                           <li><strong>Nomor Surat:</strong> Sebagai arsip dan identifikasi surat.</li>
+                           <li><strong>Lampiran:</strong> Menunjukkan jumlah dokumen yang disertakan.</li>
+                           <li><strong>Perihal/Hal:</strong> Inti atau tujuan surat.</li>
+                           <li><strong>Tembusan:</strong> Menunjukkan pihak lain yang juga menerima salinan surat.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Kupas Teori: Bahasa Surat</h2>
+                        <ul class="list-disc pl-5 space-y-2">
+                           <li><strong>Kata Sapaan:</strong> Gunakan sapaan yang sesuai. <em>"Hai, bro!"</em> cocok untuk surat pribadi ke teman, tapi untuk surat resmi gunakan <em>"Yth. Bapak/Ibu Kepala Sekolah"</em>.</li>
+                           <li><strong>Kata Baku vs Tidak Baku:</strong> Surat resmi <strong>wajib</strong> menggunakan kata baku (contoh: tidak, dibuat, silakan), sementara surat pribadi lebih fleksibel (bisa menggunakan: nggak, dibikin, silahkan).</li>
+                           <li><strong>Pronomina (Kata Ganti):</strong> Perhatikan penggunaan kata ganti. <em>"Aku"</em> dan <em>"kamu"</em> untuk surat pribadi. <em>"Kami"</em> (atas nama instansi) dan <em>"Saudara/Bapak/Ibu"</em> untuk surat resmi.</li>
+                        </ul>
+                    </div>
+                     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mt-6">
+                        <h2>Rangkuman Bab 6</h2>
+                        <p>Berkomunikasi lewat tulisan memerlukan etika. Memahami perbedaan surat pribadi dan surat resmi membantu kita memilih gaya bahasa dan format yang tepat. Kunci utamanya adalah menyesuaikan cara kita berkomunikasi dengan siapa kita berbicara dan apa tujuan kita menulis surat tersebut.</p>
+                    </div>
+                </div>`},
+        ];
+        
+        const quizData = [
+            // Bab 1
+            { question: "Teks yang bertujuan melukiskan suatu objek sehingga pembaca seolah-olah dapat melihat, mendengar, dan merasakannya disebut...", type: 'mc', options: ["Teks Narasi", "Teks Deskripsi", "Teks Prosedur", "Teks Berita"], answer: "Teks Deskripsi", explanation: "Teks Deskripsi bertujuan untuk menggambarkan objek secara rinci dengan melibatkan panca indra, sehingga pembaca seolah-olah mengalami langsung." },
+            { question: "Kalimat 'Ombak berkejar-kejaran menuju tepi pantai' menggunakan majas...", type: 'mc', options: ["Metafora", "Hiperbola", "Personifikasi", "Simile"], answer: "Personifikasi", explanation: "Majas Personifikasi memberikan sifat atau perilaku manusia kepada benda mati. Ombak (benda mati) digambarkan bisa 'berkejar-kejaran' seperti manusia." },
+            // Bab 2
+            { question: "Puisi rakyat yang terdiri dari 4 baris, bersajak a-b-a-b, dimana dua baris pertama adalah sampiran dan dua baris terakhir adalah isi, disebut...", type: 'mc', options: ["Gurindam", "Syair", "Mantra", "Pantun"], answer: "Pantun", explanation: "Ciri-ciri tersebut (4 baris, sajak a-b-a-b, ada sampiran dan isi) adalah karakteristik utama dari Pantun." },
+            { question: "Apa perbedaan utama antara tokoh protagonis dan antagonis dalam cerita fantasi?", type: 'essay', answer: null, explanation: "Tokoh protagonis adalah tokoh utama yang biasanya memiliki sifat baik dan menjadi pusat cerita. Tokoh antagonis adalah lawan dari protagonis, yang memiliki sifat jahat dan menjadi sumber konflik dalam cerita." },
+             // Bab 3
+            { question: "Struktur teks prosedur yang benar adalah...", type: 'mc', options: ["Tujuan - Langkah-langkah - Bahan", "Bahan - Tujuan - Langkah-langkah", "Tujuan - Bahan dan Alat - Langkah-langkah", "Langkah-langkah - Tujuan - Penutup"], answer: "Tujuan - Bahan dan Alat - Langkah-langkah", explanation: "Struktur yang umum dan logis adalah diawali dengan tujuan, diikuti daftar bahan/alat yang diperlukan, baru kemudian langkah-langkah pelaksanaannya." },
+            { question: "'Aduk-lah adonan hingga merata!' Kalimat tersebut merupakan contoh kalimat...", type: 'mc', options: ["Tanya", "Berita", "Perintah (Imperatif)", "Seru"], answer: "Perintah (Imperatif)", explanation: "Penggunaan partikel '-lah' pada kata kerja 'aduk' menunjukkan bahwa kalimat tersebut adalah kalimat perintah." },
+            // Bab 4
+            { question: "Unsur berita yang menjawab pertanyaan 'Mengapa peristiwa itu terjadi?' adalah...", type: 'mc', options: ["What (Apa)", "Who (Siapa)", "Why (Mengapa)", "When (Kapan)"], answer: "Why (Mengapa)", explanation: "Unsur 'Why' (Mengapa) dalam berita menjelaskan latar belakang atau penyebab terjadinya suatu peristiwa." },
+            { question: "'Menurut saksi mata, kecelakaan itu sangat mengerikan.' Kalimat tersebut mengandung...", type: 'mc', options: ["Fakta", "Opini", "Data Akurat", "Perintah"], answer: "Opini", explanation: "Frasa 'sangat mengerikan' adalah penilaian subjektif dari saksi mata, bukan fakta yang bisa diukur. Jadi, ini adalah opini." },
+            { question: "Sebutkan 3 dari 6 unsur berita (ADIKSIMBA)!", type: 'essay', answer: null, explanation: "Jawaban yang benar bisa menyebutkan tiga di antara: Apa, Di mana, Kapan, Siapa, Mengapa, dan Bagaimana." },
+             // Bab 5
+            { question: "Bagian dari resensi buku yang berisi ringkasan cerita atau isi buku disebut...", type: 'mc', options: ["Konteks", "Penilaian", "Deskripsi", "Identitas Buku"], answer: "Deskripsi", explanation: "Bagian Deskripsi dalam sebuah teks tanggapan atau resensi berisi sinopsis atau gambaran umum isi buku tanpa memberikan penilaian." },
+            { question: "'Buku ini sangat direkomendasikan untuk remaja karena bahasanya yang ringan dan kekinian.' Kalimat ini cocok berada di bagian ... pada teks tanggapan.", type: 'mc', options: ["Konteks", "Deskripsi", "Penilaian", "Sinopsis"], answer: "Penilaian", explanation: "Kalimat tersebut berisi evaluasi dan saran (rekomendasi), yang merupakan ciri utama dari bagian Penilaian dalam sebuah resensi." },
+            { question: "Apa fungsi utama dari teks tanggapan (resensi)?", type: 'essay', answer: null, explanation: "Fungsi utamanya adalah untuk memberikan pertimbangan atau penilaian terhadap suatu karya kepada pembaca. Resensi membantu calon pembaca untuk mengetahui gambaran, kelebihan, dan kekurangan sebuah karya sebelum memutuskan untuk menikmatinya." },
+            // Bab 6
+            { question: "Bagian surat resmi yang tidak terdapat pada surat pribadi adalah...", type: 'mc', options: ["Tanggal Surat", "Salam Pembuka", "Isi Surat", "Kop Surat"], answer: "Kop Surat", explanation: "Kop surat (Kepala Surat) yang berisi identitas instansi hanya ada pada surat resmi, tidak pada surat pribadi." },
+            { question: "Kata 'enggak' dan 'bikin' lebih cocok digunakan dalam jenis surat...", type: 'mc', options: ["Surat Resmi", "Surat Pribadi", "Surat Lamaran Kerja", "Surat Edaran"], answer: "Surat Pribadi", explanation: "'Enggak' dan 'bikin' adalah kata tidak baku yang lazim digunakan dalam percakapan santai atau surat pribadi kepada teman/keluarga, bukan dalam surat resmi." },
+            { question: "Yth. Bapak Ahmad Sanusi. Bagian surat ini disebut...", type: 'mc', options: ["Salam Pembuka", "Alamat Dalam", "Perihal", "Isi Surat"], answer: "Alamat Dalam", explanation: "Bagian yang mencantumkan nama dan alamat penerima surat disebut Alamat Dalam (Inside Address)." },
+            // Soal Tambahan
+            { question: "Pesan moral yang ingin disampaikan penulis dalam sebuah cerita disebut...", type: 'mc', options: ["Tema", "Alur", "Amanat", "Latar"], answer: "Amanat", explanation: "Amanat adalah pesan atau nasihat yang ingin disampaikan pengarang kepada pembaca melalui karyanya." },
+            { question: "Kalimat 'Jangan membuang sampah sembarangan!' merupakan contoh kalimat...", type: 'mc', options: ["Ajakan", "Perintah", "Larangan", "Saran"], answer: "Larangan", explanation: "Penggunaan kata 'Jangan' secara eksplisit menunjukkan sebuah larangan untuk melakukan sesuatu." },
+            { question: "Bagian akhir cerita di mana semua masalah terselesaikan disebut...", type: 'mc', options: ["Orientasi", "Komplikasi", "Klimaks", "Resolusi"], answer: "Resolusi", explanation: "Resolusi adalah tahap penyelesaian masalah dalam alur cerita, di mana konflik berakhir dan nasib para tokoh menjadi jelas." },
+            { question: "Mengapa teks prosedur harus ditulis secara berurutan?", type: 'essay', answer: null, explanation: "Teks prosedur harus berurutan agar pembaca dapat mengikuti setiap langkah dengan benar dan tidak melakukan kesalahan yang bisa menyebabkan kegagalan dalam mencapai tujuan akhir. Urutan yang salah bisa menghasilkan hasil yang berbeda atau bahkan berbahaya." },
+            { question: "Apa tujuan dari bagian 'sampiran' dalam sebuah pantun?", type: 'essay', answer: null, explanation: "Sampiran (baris 1 dan 2) berfungsi sebagai pengantar dan untuk menyiapkan rima/persajakan bunyi yang akan disambut oleh bagian isi (baris 3 dan 4). Sampiran biasanya tidak berhubungan langsung secara makna dengan isi." },
+        ];
+        
+
+        // --- CORE & UTILITY FUNCTIONS ---
+        const mainContent = document.getElementById('main-content');
+        const themeToggle = document.getElementById('theme-toggle');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const materiLinksContainer = document.getElementById('materi-links');
+        const headerTitle = document.getElementById('header-title');
+
+        // Dark Mode Logic
+        const applyTheme = (isDark) => {
+            document.documentElement.classList.toggle('dark', isDark);
+            darkIcon.classList.toggle('hidden', !isDark);
+            lightIcon.classList.toggle('hidden', isDark);
+        };
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            applyTheme(isDark);
+        });
+
+        // Sidebar Toggle for Mobile
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        const closeSidebar = () => {
+             if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        // Router-like function
+        function showPage(pageId) {
+            mainContent.innerHTML = ''; // Clear content
+            let content = '';
+            let pageTitle = 'Beranda';
+
+            const activeLink = document.querySelector('.nav-link.active');
+            if(activeLink) activeLink.classList.remove('active');
+
+            const newActiveLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
+            if(newActiveLink) newActiveLink.classList.add('active');
+            
+            if (pageId === 'beranda') {
+                content = `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 animate-fade-in">
+                        <div class="text-center">
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-cyan-600 dark:text-cyan-400 mb-4">Selamat Datang di Portal Belajar!</h1>
+                            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">Website ini adalah teman belajarmu untuk menguasai materi Bahasa Indonesia kelas VII. Semua materi dirangkum dari buku paket resmi, disajikan dengan cara yang asyik dan mudah dipahami.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6 text-center">
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                                <i data-feather="book-open" class="w-12 h-12 text-cyan-500 mx-auto mb-3"></i>
+                                <h3 class="font-bold text-xl mb-2">Materi Interaktif</h3>
+                                <p class="text-slate-600 dark:text-slate-400">Jelajahi setiap bab dengan penjelasan runtut, contoh jelas, dan rangkuman padat.</p>
+                            </div>
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                                 <i data-feather="check-square" class="w-12 h-12 text-cyan-500 mx-auto mb-3"></i>
+                                <h3 class="font-bold text-xl mb-2">Kuis & Pembahasan</h3>
+                                <p class="text-slate-600 dark:text-slate-400">Uji pemahamanmu dengan kuis. Setiap soal dilengkapi pembahasan agar makin paham.</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a href="#bab1" class="nav-link inline-block mt-10 bg-cyan-600 text-white font-bold py-3 px-8 rounded-full hover:bg-cyan-700 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:-translate-y-1">Mulai Belajar</a>
+                        </div>
+                    </div>`;
+            } else if (pageId === 'kuis') {
+                pageTitle = 'Kuis Interaktif';
+                content = getKuisHTML();
+                setTimeout(startQuiz, 0); 
+            } else {
+                const materi = materiData.find(m => m.id === pageId);
+                if (materi) {
+                    pageTitle = materi.title;
+                    content = materi.content;
+                } else {
+                    pageTitle = 'Tidak Ditemukan';
+                    content = `<p>Konten tidak ditemukan.</p>`;
+                }
+            }
+            mainContent.innerHTML = content;
+            headerTitle.textContent = pageTitle;
+            feather.replace();
+            closeSidebar();
+        }
+
+        // Navigation Handling
+        document.body.addEventListener('click', (e) => {
+            const navLink = e.target.closest('.nav-link');
+            if (navLink) {
+                e.preventDefault();
+                const pageId = navLink.getAttribute('href').substring(1);
+                history.pushState(null, null, `#${pageId}`);
+                showPage(pageId);
+            }
+        });
+        
+        window.addEventListener('popstate', () => {
+            const pageId = location.hash.substring(1) || 'beranda';
+            showPage(pageId);
+        });
+
+        // KUIS LOGIC
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function getKuisHTML() {
+            return `
+                <div id="quiz-container" class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 sm:p-8 animate-fade-in">
+                    <div id="quiz-content">
+                        <div class="text-center">
+                           <h1 class="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-4">Kuis Interaktif</h1>
+                           <p class="text-lg mb-6">Selamat datang di kuis! Ada ${quizData.length} soal untuk menguji pemahamanmu dari semua bab.</p>
+                           <button id="start-quiz-btn" class="bg-cyan-600 text-white font-bold py-3 px-8 rounded-full hover:bg-cyan-700 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:-translate-y-1">Mulai Kuis</button>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        function startQuiz() {
+            const startBtn = document.getElementById('start-quiz-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', () => {
+                    currentQuestionIndex = 0;
+                    score = 0;
+                    displayQuestion();
+                });
+            }
+        }
+        
+        function displayQuestion() {
+            const quizContent = document.getElementById('quiz-content');
+            if (!quizContent) return;
+            const question = quizData[currentQuestionIndex];
+            let optionsHTML = '';
+
+            if (question.type === 'mc') {
+                const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+                optionsHTML = shuffledOptions.map(option => `
+                    <label class="flex items-center w-full p-4 border-2 border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer hover:border-cyan-500 dark:hover:border-cyan-500 has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50 dark:has-[:checked]:bg-cyan-900/30 transition-all duration-200">
+                        <input type="radio" name="option" value="${option}" class="hidden">
+                        <span>${option}</span>
+                    </label>
+                `).join('');
+            } else { // essay
+                optionsHTML = `<textarea id="essay-answer" class="w-full p-3 border-2 border-slate-200 dark:border-slate-600 rounded-md bg-slate-50 dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500" rows="4" placeholder="Ketik jawabanmu di sini..."></textarea>`;
+            }
+
+            quizContent.innerHTML = `
+                <div class="mb-6">
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">Soal ${currentQuestionIndex + 1} dari ${quizData.length}</p>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 mt-2">
+                        <div class="bg-cyan-500 h-2.5 rounded-full transition-all duration-500" style="width: ${(currentQuestionIndex + 1) / quizData.length * 100}%"></div>
+                    </div>
+                </div>
+                <h2 class="text-xl font-semibold mb-6">${question.question}</h2>
+                <div class="space-y-4">${optionsHTML}</div>
+                <div class="flex justify-end mt-8">
+                    <button id="check-answer-btn" class="bg-cyan-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-cyan-700 transition-colors">Cek Jawaban</button>
+                    <button id="next-question-btn" class="bg-slate-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-slate-600 transition-colors hidden">Lanjut</button>
+                </div>
+                <div id="feedback" class="mt-6 p-4 rounded-lg hidden animate-fade-in"></div>
+            `;
+            document.getElementById('check-answer-btn').addEventListener('click', checkAnswer);
+        }
+
+        function checkAnswer() {
+            const question = quizData[currentQuestionIndex];
+            const feedbackEl = document.getElementById('feedback');
+            const checkBtn = document.getElementById('check-answer-btn');
+            const nextBtn = document.getElementById('next-question-btn');
+            let userAnswer;
+            let isCorrect = false;
+
+            if (question.type === 'mc') {
+                const selectedOption = document.querySelector('input[name="option"]:checked');
+                if (!selectedOption) {
+                    alert("Pilih salah satu jawaban dulu ya!");
+                    return;
+                }
+                userAnswer = selectedOption.value;
+                isCorrect = userAnswer === question.answer;
+                if(isCorrect) score++;
+            } else { // essay
+                const essayInput = document.getElementById('essay-answer');
+                userAnswer = essayInput.value.trim();
+                if (userAnswer === '') {
+                    alert("Isi jawabanmu dulu ya!");
+                    return;
+                }
+                isCorrect = true; // For essay, we just check if it's answered and award point
+                score++;
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            let feedbackHTML = '';
+            if (question.type === 'mc') {
+                if(isCorrect) {
+                    feedbackEl.className = 'mt-6 p-4 rounded-lg bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 border border-green-200 dark:border-green-800 animate-fade-in';
+                    feedbackHTML = `<h3 class="font-bold text-lg flex items-center"><i data-feather="check-circle" class="w-5 h-5 mr-2"></i>Benar!</h3>`;
+                } else {
+                     feedbackEl.className = 'mt-6 p-4 rounded-lg bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border border-red-200 dark:border-red-800 animate-fade-in';
+                     feedbackHTML = `<h3 class="font-bold text-lg flex items-center"><i data-feather="x-circle" class="w-5 h-5 mr-2"></i>Kurang Tepat.</h3> <p class="mt-1">Jawaban yang benar adalah: <strong>${question.answer}</strong></p>`;
+                }
+            } else {
+                feedbackEl.className = 'mt-6 p-4 rounded-lg bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 border border-blue-200 dark:border-blue-800 animate-fade-in';
+                feedbackHTML = `<h3 class="font-bold text-lg flex items-center"><i data-feather="message-square" class="w-5 h-5 mr-2"></i>Jawabanmu sudah tersimpan!</h3>`;
+            }
+            feedbackHTML += `<p class="mt-2"><b>Pembahasan:</b> ${question.explanation}</p>`;
+            feedbackEl.innerHTML = feedbackHTML;
+            feather.replace();
+            checkBtn.classList.add('hidden');
+            nextBtn.classList.remove('hidden');
+            nextBtn.addEventListener('click', nextQuestion, { once: true });
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+             const quizContent = document.getElementById('quiz-content');
+             const percentage = (score / quizData.length) * 100;
+             let message = '';
+             if (percentage >= 80) message = 'Luar biasa! Pemahamanmu sangat baik!';
+             else if (percentage >= 60) message = 'Bagus! Terus tingkatkan lagi ya.';
+             else message = 'Jangan menyerah! Coba pelajari lagi materinya dan ulangi kuisnya.';
+             quizContent.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold mb-4">Kuis Selesai!</h2>
+                    <p class="text-lg">Skor Akhirmu:</p>
+                    <p class="text-6xl font-extrabold my-4 text-cyan-500">${score} / ${quizData.length}</p>
+                    <p class="text-xl font-semibold mb-6">${message}</p>
+                    <button id="restart-quiz-btn" class="bg-cyan-600 text-white font-bold py-3 px-8 rounded-full hover:bg-cyan-700 transition-all duration-300">Ulangi Kuis</button>
+                </div>`;
+             document.getElementById('restart-quiz-btn').addEventListener('click', () => showPage('kuis'));
+        }
+        
+        function populateMateriLinks(items) {
+             const materiList = document.createElement('div');
+             materiList.id = 'materi-list';
+             materiList.className = 'space-y-1';
+             materiList.innerHTML = items.map(materi => `
+                <a href="#${materi.id}" class="nav-link flex items-center p-3 text-sm font-medium text-slate-700 rounded-lg dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 group">
+                   <i data-feather="file-text" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-white"></i>
+                   <span class="truncate">${materi.title}</span>
+                </a>
+            `).join('');
+            
+            const searchInput = `<input type="text" id="search-materi" placeholder="Cari materi..." class="w-full px-3 py-2 mb-3 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm">`;
+            materiLinksContainer.innerHTML = '<h3 class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Materi Pelajaran</h3>' + searchInput;
+            materiLinksContainer.appendChild(materiList);
+            feather.replace();
+        }
+
+        const fuse = new Fuse(materiData, { keys: ['title', 'content'], threshold: 0.4 });
+
+        materiLinksContainer.addEventListener('input', (e) => {
+             if (e.target.id === 'search-materi') {
+                const query = e.target.value.trim();
+                const materiListDiv = document.getElementById('materi-list');
+                if (query === '') {
+                    materiListDiv.innerHTML = materiData.map(materi => `
+                        <a href="#${materi.id}" class="nav-link flex items-center p-3 text-sm font-medium text-slate-700 rounded-lg dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 group">
+                           <i data-feather="file-text" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-white"></i>
+                           <span class="truncate">${materi.title}</span>
+                        </a>`).join('');
+                } else {
+                    const results = fuse.search(query).map(result => result.item);
+                    materiListDiv.innerHTML = results.map(materi => `
+                        <a href="#${materi.id}" class="nav-link flex items-center p-3 text-sm font-medium text-slate-700 rounded-lg dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 group">
+                           <i data-feather="file-text" class="w-4 h-4 mr-3 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-white"></i>
+                           <span class="truncate">${materi.title}</span>
+                        </a>`).join('');
+                }
+                feather.replace();
+            }
+        });
+
+
+        // --- INITIAL LOAD ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme === 'dark');
+            
+            populateMateriLinks(materiData);
+
+            const initialPage = location.hash.substring(1) || 'beranda';
+            showPage(initialPage);
+        });
+
+    </script>
+
+</body>
+</html>
